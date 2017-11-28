@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"><meta charset="utf-8">
+
+	<title>Mapping the Overlooked: The Sustainability of Attention</title>
+
+<link rel="stylesheet" href="Leaflet%20TileLayer.GL%20AntiToner%20demo_files/leaflet.css" integrity="sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ==" crossorigin="">
+<script src="Leaflet%20TileLayer.GL%20AntiToner%20demo_files/leaflet-src.js" integrity="sha512-WXoSHqw/t26DszhdMhOXOkI7qCiv5QWXhH9R7CgvgZMHz1ImlkVQ3uNsiQKu5wwbbxtPzFXd1hK4tzno2VqhpA==" crossorigin=""></script>
+
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script src="Leaflet%20TileLayer.GL%20AntiToner%20demo_files/Leaflet.js"></script>
+</head>
+<body>
+	<div id="map" style="width: 100%; max-height: 100%; height: 600px; position: relative; outline: medium none currentcolor;" class="leaflet-container leaflet-touch leaflet-retina leaflet-fade-anim leaflet-grab leaflet-touch-drag leaflet-touch-zoom" tabindex="0"><div class="leaflet-pane leaflet-map-pane" style="transform: translate3d(0px, 0px, 0px);"><div class="leaflet-pane leaflet-tile-pane"><div class="leaflet-layer " style="z-index: 1; opacity: 1;"><div class="leaflet-tile-container leaflet-zoom-animated" style="transform: translate3d(0px, 44px, 0px) scale(1);"><canvas class="leaflet-tile leaflet-tile-loaded" height="256" width="256" style="width: 256px; height: 256px; transform: translate3d(367px, 0px, 0px); opacity: 1;"></canvas><canvas class="leaflet-tile leaflet-tile-loaded" height="256" width="256" style="width: 256px; height: 256px; transform: translate3d(623px, 0px, 0px); opacity: 1;"></canvas><canvas class="leaflet-tile leaflet-tile-loaded" height="256" width="256" style="width: 256px; height: 256px; transform: translate3d(367px, 256px, 0px); opacity: 1;"></canvas><canvas class="leaflet-tile leaflet-tile-loaded" height="256" width="256" style="width: 256px; height: 256px; transform: translate3d(623px, 256px, 0px); opacity: 1;"></canvas><canvas class="leaflet-tile leaflet-tile-loaded" height="256" width="256" style="width: 256px; height: 256px; transform: translate3d(111px, 0px, 0px); opacity: 1;"></canvas><canvas class="leaflet-tile leaflet-tile-loaded" height="256" width="256" style="width: 256px; height: 256px; transform: translate3d(879px, 0px, 0px); opacity: 1;"></canvas><canvas class="leaflet-tile leaflet-tile-loaded" height="256" width="256" style="width: 256px; height: 256px; transform: translate3d(111px, 256px, 0px); opacity: 1;"></canvas><canvas class="leaflet-tile leaflet-tile-loaded" height="256" width="256" style="width: 256px; height: 256px; transform: translate3d(879px, 256px, 0px); opacity: 1;"></canvas><canvas class="leaflet-tile leaflet-tile-loaded" height="256" width="256" style="width: 256px; height: 256px; transform: translate3d(-145px, 0px, 0px); opacity: 1;"></canvas><canvas class="leaflet-tile leaflet-tile-loaded" height="256" width="256" style="width: 256px; height: 256px; transform: translate3d(1135px, 0px, 0px); opacity: 1;"></canvas><canvas class="leaflet-tile leaflet-tile-loaded" height="256" width="256" style="width: 256px; height: 256px; transform: translate3d(-145px, 256px, 0px); opacity: 1;"></canvas><canvas class="leaflet-tile leaflet-tile-loaded" height="256" width="256" style="width: 256px; height: 256px; transform: translate3d(1135px, 256px, 0px); opacity: 1;"></canvas></div></div></div><div class="leaflet-pane leaflet-shadow-pane"></div><div class="leaflet-pane leaflet-overlay-pane"></div><div class="leaflet-pane leaflet-marker-pane"></div><div class="leaflet-pane leaflet-tooltip-pane"></div><div class="leaflet-pane leaflet-popup-pane"></div><div class="leaflet-proxy leaflet-zoom-animated" style="transform: translate3d(256px, 256px, 0px) scale(1);"></div></div><div class="leaflet-control-container"><div class="leaflet-top leaflet-left"><div class="leaflet-control-zoom leaflet-bar leaflet-control"><a class="leaflet-control-zoom-in" href="#" title="Zoom in" role="button" aria-label="Zoom in">+</a><a class="leaflet-control-zoom-out" href="#" title="Zoom out" role="button" aria-label="Zoom out">-</a></div></div><div class="leaflet-top leaflet-right"></div><div class="leaflet-bottom leaflet-left"></div><div class="leaflet-bottom leaflet-right"><div class="leaflet-control-attribution leaflet-control"><a href="http://leafletjs.com/" title="A JS library for interactive maps">Leaflet</a></div></div></div></div>
+
+
+	<script type="text/javascript">
+
+var fragmentShader = `
+void main(void) {
+    //create arrays with buildings and radii
+    const int numBuild = 7;
+    vec2 buildings[numBuild];
+    float rads[numBuild];
+    rads[0] = 8.; //mckeldin
+    rads[1] = 8.; //pfreddy
+    rads[2] = 3.; //south diner
+    rads[3] = 1.; //kim
+    rads[4] = 8.; //stamp
+    rads[5] = 2.; //chem
+    rads[6] = 6.; //bus stop
+    buildings[0] = vec2(-76.945,38.986);
+    buildings[1] = vec2(-76.9457,38.9832);
+    buildings[2] = vec2(-76.9437,38.98305);
+    buildings[3] = vec2(-76.937915,38.99094);
+    buildings[4] = vec2(-76.944882,38.987989);
+    buildings[5] = vec2(-76.940122,38.989309);
+    buildings[6] = vec2(-76.943845,38.987652);
+    //caculate correct distance from the nearest building and select the appropriate radius
+    float rad = 1.;
+    float distance = 100000.;
+    for(int i = 0; i<numBuild; i++){
+        float dlat = buildings[i].x - vLatLngCoords.x;
+        float dlon = buildings[i].y - vLatLngCoords.y;
+        float iter_distance = sqrt(dlat*dlat + dlon*dlon);
+        if(iter_distance < distance){
+            distance = iter_distance;
+            rad = rads[i];
+        }
+    }
+
+    //get fragment's texture from uTexture0
+    vec4 tex = texture2D(uTexture0, vec2(vTextureCoords.s, vTextureCoords.t));
+
+    //add code to saturate tex vector
+    tex = vec4(tex.r, tex.g, tex.b*.75, 1.0);
+    
+    //calculate luminance to make black and white
+    float lum = tex[0]+tex[1]+tex[2];
+    lum = lum/3.0;
+    vec4 bwTex = vec4(lum, lum, lum, 1.0);
+
+    //mix bw and colored vectors based on a factor
+    float fac = clamp(pow(distance, .8)*1500.0*(1./rad), 0.0, 1.0);
+    tex = (tex*(1.0-fac))+(bwTex*fac);
+    
+    gl_FragColor = tex;
+}
+`;
+
+		var tileSize = 256;
+
+		var map = L.map('map').setView([38.9869,-76.9426], 16);
+
+		var antitoner = L.tileLayer.gl({
+			fragmentShader: fragmentShader,
+			tileUrls: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}'],
+    attribution: 'University of Maryland WebMap',
+    maxZoom: 18,
+    minZoom: 0
+		}).addTo(map);
+	</script>
+
+
+</body></html>
